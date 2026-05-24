@@ -35,15 +35,16 @@
         width = <128>;
         height = <32>;
         
-        /* Required Zephyr 4.1 hardware matrix positioning offsets */
+        /* Required Zephyr 4.1 hardware configuration properties */
         segment-offset = <0>;
         page-offset = <0>;
         display-offset = <0>;
+        multiplex-ratio = <31>; /* Height (32) - 1 */
         
-        /* Updated driver boolean definitions */
-        segment-remap;
-        com-invdir;
-        com-sequential;
+        /* Updated driver boolean formats for Zephyr 4.1 */
+        segment-remap = <1>;
+        com-invdir = <1>;
+        com-sequential = <1>;
         prechargep1 = <1>;
         prechargep2 = <15>;
     };
