@@ -17,7 +17,7 @@
         group1 {
             psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,
                     <NRF_PSEL(TWIM_SCL, 0, 11)>;
-                    low-power-enable;
+            low-power-enable;
         };
     };
 };
@@ -41,8 +41,8 @@
         display-offset = <0>;
         multiplex-ratio = <31>;
         
-        /* Unified precharge array macro [p1, p2] */
-        prechargep = <1 15>;
+        /* Explicit hexadecimal array notation to satisfy the strict schema parser */
+        prechargep = <0x01 0x0F>;
         
         /* Traditional empty boolean flags for the schema parser */
         segment-remap;
