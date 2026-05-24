@@ -34,6 +34,13 @@
         reg = <0x3c>;
         width = <128>;
         height = <32>;
+        
+        /* Required Zephyr 4.1 hardware matrix positioning offsets */
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        
+        /* Updated driver boolean definitions */
         segment-remap;
         com-invdir;
         com-sequential;
