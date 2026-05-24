@@ -41,8 +41,8 @@
         display-offset = <0>;
         multiplex-ratio = <31>;
         
-        /* Explicit hexadecimal array notation to satisfy the strict schema parser */
-        prechargep = <0x01 0x0F>;
+        /* Use square brackets [ ] for uint8-array representation with no leading zero padding */
+        prechargep = [ 0x1 0xf ];
         
         /* Traditional empty boolean flags for the schema parser */
         segment-remap;
