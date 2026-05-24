@@ -41,9 +41,6 @@
         display-offset = <0>;
         multiplex-ratio = <31>;
         
-        /* Pure hex bytes inside square brackets—no 0x, exactly two digits per byte */
-        prechargep = [ 01 0f ];
-        
         /* Traditional empty boolean flags for the schema parser */
         segment-remap;
         com-invdir;
