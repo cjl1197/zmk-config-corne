@@ -1,11 +1,10 @@
 / {
-    /* Define the new physical pin layout for the I2C bus */
     soc {
         pinctrl: pin-controller@50000000 {
             i2c1_default: i2c1_default {
                 group1 {
-                    psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 maps to MOSI pad */
-                            <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 maps to SCK pad */
+                    psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 / MOSI */
+                            <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 / SCK */
                     bias-pull-up;
                 };
             };
@@ -21,14 +20,20 @@
     };
 };
 
-/* Activate the I2C driver on those specific pins and mount the OLED */
+/* Disable the stock, default Corne display node to resolve the collision */
+&oled {
+    status = "disabled";
+};
+
+/* Activate our custom redirected physical I2C bus */
 &i2c1 {
     status = "okay";
     pinctrl-0 = <&i2c1_default>;
     pinctrl-1 = <&i2c1_sleep>;
     pinctrl-names = "default", "sleep";
 
-    oled: ssd1306@3c {
+    /* Rename the label to 'custom_oled' to prevent namespace clashing */
+    custom_oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
         width = <128>;
