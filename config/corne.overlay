@@ -1,0 +1,42 @@
+/ {
+    /* Define the new physical pin layout for the I2C bus */
+    soc {
+        pinctrl: pin-controller@50000000 {
+            i2c1_default: i2c1_default {
+                group1 {
+                    psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 maps to MOSI pad */
+                            <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 maps to SCK pad */
+                    bias-pull-up;
+                };
+            };
+
+            i2c1_sleep: i2c1_sleep {
+                group1 {
+                    psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,
+                            <NRF_PSEL(TWIM_SCL, 0, 11)>;
+                    low-power-enable;
+                };
+            };
+        };
+    };
+};
+
+/* Activate the I2C driver on those specific pins and mount the OLED */
+&i2c1 {
+    status = "okay";
+    pinctrl-0 = <&i2c1_default>;
+    pinctrl-1 = <&i2c1_sleep>;
+    pinctrl-names = "default", "sleep";
+
+    oled: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        width = <128>;
+        height = <32>;
+        segment-remap;
+        com-invdir;
+        com-sequential;
+        prechargep1 = <1>;
+        prechargep2 = <15>;
+    };
+};
