@@ -1,38 +1,34 @@
-/ {
-    soc {
-        pinctrl: pin-controller@50000000 {
-            i2c1_default: i2c1_default {
-                group1 {
-                    psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 / MOSI */
-                            <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 / SCK */
-                    bias-pull-up;
-                };
-            };
-
-            i2c1_sleep: i2c1_sleep {
-                group1 {
-                    psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,
-                            <NRF_PSEL(TWIM_SCL, 0, 11)>;
-                    low-power-enable;
-                };
-            };
-        };
-    };
-};
-
-/* Disable the stock, default Corne display node to resolve the collision */
+/* Explicitly disable the stock default display node from the base Corne shield */
 &oled {
     status = "disabled";
 };
 
-/* Activate our custom redirected physical I2C bus */
+/* Target the core system pin-controller directly to inject our I2C alternate functions */
+&pinctrl {
+    i2c1_default: i2c1_default {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 / MOSI Pad */
+                    <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 / SCK Pad */
+            bias-pull-up;
+        };
+    };
+
+    i2c1_sleep: i2c1_sleep {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 11)>;
+            low-power-enable;
+        };
+    };
+};
+
+/* Initialize our custom I2C master engine on those mapped lines */
 &i2c1 {
     status = "okay";
     pinctrl-0 = <&i2c1_default>;
     pinctrl-1 = <&i2c1_sleep>;
     pinctrl-names = "default", "sleep";
 
-    /* Rename the label to 'custom_oled' to prevent namespace clashing */
     custom_oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
