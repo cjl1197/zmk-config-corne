@@ -17,10 +17,18 @@
     };
 };
 
-/* Activate the second hardware I2C controller using our custom pin assignment */
+/* Activate the second hardware I2C controller and mount a standard OLED on it */
 &i2c1 {
     status = "okay";
     pinctrl-0 = <&i2c1_default>;
     pinctrl-1 = <&i2c1_sleep>;
     pinctrl-names = "default", "sleep";
+
+    /* Tell ZMK there is a standard 128x32 SSD1306 screen sitting here */
+    oled: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        width = <128>;
+        height = <32>;
+    };
 };
