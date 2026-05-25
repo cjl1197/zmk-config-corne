@@ -1,6 +1,6 @@
-/* Target the core system pin-controller directly to route our physical hardware lines */
+/* Target the core system pin-controller to redefine the default i2c0 pins */
 &pinctrl {
-    i2c1_default: i2c1_default {
+    i2c0_default: i2c0_default {
         group1 {
             psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 maps to your MOSI wire */
                     <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 maps to your SCK wire */
@@ -8,7 +8,7 @@
         };
     };
 
-    i2c1_sleep: i2c1_sleep {
+    i2c0_sleep: i2c0_sleep {
         group1 {
             psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,
                     <NRF_PSEL(TWIM_SCL, 0, 11)>;
@@ -17,10 +17,10 @@
     };
 };
 
-/* Activate the alternative hardware I2C controller using our custom pin assignment */
-&i2c1 {
+/* Apply our new physical pin mappings to the default I2C bus */
+&i2c0 {
     status = "okay";
-    pinctrl-0 = <&i2c1_default>;
-    pinctrl-1 = <&i2c1_sleep>;
+    pinctrl-0 = <&i2c0_default>;
+    pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
 };
