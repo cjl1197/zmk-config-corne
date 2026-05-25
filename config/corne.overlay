@@ -1,14 +1,9 @@
-/* Explicitly disable the stock default display node from the base Corne shield */
-&oled {
-    status = "disabled";
-};
-
-/* Target the core system pin-controller directly to inject our I2C alternate functions */
+/* Target the core system pin-controller directly to route our physical hardware lines */
 &pinctrl {
     i2c1_default: i2c1_default {
         group1 {
-            psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 / MOSI Pad */
-                    <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 / SCK Pad */
+            psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 maps to your MOSI wire */
+                    <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 maps to your SCK wire */
             bias-pull-up;
         };
     };
@@ -22,31 +17,10 @@
     };
 };
 
-/* Initialize our custom I2C master engine on those mapped lines */
+/* Activate the second hardware I2C controller using our custom pin assignment */
 &i2c1 {
     status = "okay";
     pinctrl-0 = <&i2c1_default>;
     pinctrl-1 = <&i2c1_sleep>;
     pinctrl-names = "default", "sleep";
-
-    custom_oled: ssd1306@3c {
-        compatible = "solomon,ssd1306fb";
-        reg = <0x3c>;
-        width = <128>;
-        height = <32>;
-        
-        /* Required Zephyr 4.1 hardware configuration properties */
-        segment-offset = <0>;
-        page-offset = <0>;
-        display-offset = <0>;
-        multiplex-ratio = <31>;
-        
-        /* Absolute string template alignment for python-devicetree script matching */
-        prechargep = [ 01 0f ];
-        
-        /* Traditional empty boolean flags for the schema parser */
-        segment-remap;
-        com-invdir;
-        com-sequential;
-    };
 };
