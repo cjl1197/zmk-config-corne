@@ -41,8 +41,8 @@
         display-offset = <0>;
         multiplex-ratio = <31>;
         
-        /* Exact literal string match to appease the python-devicetree script */
-        prechargep = [01 0F];
+        /* Absolute string template alignment for python-devicetree script matching */
+        prechargep = [ 01 0f ];
         
         /* Traditional empty boolean flags for the schema parser */
         segment-remap;
