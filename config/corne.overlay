@@ -1,9 +1,8 @@
-/* Target the core system pin-controller to redefine the default i2c0 pins */
-&pinctrl {
+/*&pinctrl {
     i2c0_default: i2c0_default {
         group1 {
-            psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,  /* P0.00 maps to your MOSI wire */
-                    <NRF_PSEL(TWIM_SCL, 0, 11)>; /* P0.11 maps to your SCK wire */
+            psels = <NRF_PSEL(TWIM_SDA, 0, 0)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 11)>;
             bias-pull-up;
         };
     };
@@ -17,10 +16,9 @@
     };
 };
 
-/* Apply our new physical pin mappings to the default I2C bus */
 &i2c0 {
     status = "okay";
     pinctrl-0 = <&i2c0_default>;
     pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
-};
+};*/
